@@ -102,6 +102,7 @@ LIBGPG_ERROR_VERSION=1.27
 # libgcrypt is required.
 #
 LIBGCRYPT_VERSION=1.7.7
+LIBGCRYPT_VERSION=1.8.3
 
 #
 # One or more of the following libraries are required to build Wireshark.
@@ -164,6 +165,7 @@ CARES_VERSION=1.12.0
 # Redmine used by libssh.org numbers the files available for download,
 # so using version only isn't enough
 LIBSSH_VERSION=0.7.4
+LIBSSH_VERSION=0.7.5
 LIBSSH_FILENUM=210
 # mmdbresolve
 MAXMINDDB_VERSION=1.3.2
@@ -985,9 +987,9 @@ install_libgcrypt() {
             echo "libgcrypt requires libgpg-error, but you didn't install libgpg-error." 1>&2
             exit 1
         fi
-
-        echo "Downloading, building, and installing libgcrypt:"
-        [ -f libgcrypt-$LIBGCRYPT_VERSION.tar.gz ] || curl -L -O ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-$LIBGCRYPT_VERSION.tar.gz || exit 1
+        url=https://www.gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-$LIBGCRYPT_VERSION.tar.gz
+        echo "Downloading, building, and installing libgcrypt: $url"
+        [ -f libgcrypt-$LIBGCRYPT_VERSION.tar.gz ] || curl -L -O $url || exit 1
         $no_build && echo "Skipping installation" && return
         gzcat libgcrypt-$LIBGCRYPT_VERSION.tar.gz | tar xf - || exit 1
         cd libgcrypt-$LIBGCRYPT_VERSION
@@ -1466,8 +1468,9 @@ uninstall_c_ares() {
 
 install_libssh() {
     if [ "$LIBSSH_VERSION" -a ! -f libssh-$LIBSSH_VERSION-done ] ; then
-        echo "Downloading, building, and installing libssh:"
-        [ -f libssh-$LIBSSH_VERSION.tar.xz ] || curl -L -O https://red.libssh.org/attachments/download/$LIBSSH_FILENUM/libssh-$LIBSSH_VERSION.tar.xz || exit 1
+        url=https://www.libssh.org/files/0.7/libssh-LIBSSH_VERSION.tar.xz
+        echo "Downloading, building, and installing libssh: $url"
+        [ -f libssh-$LIBSSH_VERSION.tar.xz ] || curl -L -O $url || exit 1
         $no_build && echo "Skipping installation" && return
         xzcat libssh-$LIBSSH_VERSION.tar.xz | tar xf - || exit 1
         cd libssh-$LIBSSH_VERSION
